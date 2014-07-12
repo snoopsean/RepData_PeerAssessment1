@@ -80,7 +80,7 @@ The number of NAs in the original data set is 2304
 ```r
 plot(c(1:nlvl), vSums2, type = "h", lwd = 3, col = "red", xaxt = "n", xlab = "Day", 
     ylab = "Total Steps That Day")
-title(main = "Histogram of Total Number of Steps Each Day with NAs on media")
+title(main = "Histogram of Total Number of Steps Each Day with NAs replaced by the mean at each day")
 axis(1, vTicks, levels(dat2$date)[vTicks])
 ```
 
