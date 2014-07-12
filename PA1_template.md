@@ -12,13 +12,10 @@ dat<-read.csv("activity.csv")
 
 ```r
 vSums <- as.vector(tapply(dat$steps, dat$date, sum))
-nlvl <- length(levels(dat$date))
+toDate <- as.Date(levels(dat$date))
 par(mfrow = c(1, 1))
-plot(c(1:nlvl), vSums, type = "h", lwd = 3, col = "red", xaxt = "n", xlab = "Day", 
-    ylab = "Total Steps That Day")
+plot(toDate, vSums, type = "h", lwd = 3, col = "red", xlab = "Day", ylab = "Total Steps That Day")
 title(main = "Histogram of Total Number of Steps Each Day")
-vTicks <- c(1, 15, 31, 46, 61)
-axis(1, vTicks, levels(dat$date)[vTicks])
 ```
 
 ![plot of chunk totalsteps](figure/totalsteps.png) 
@@ -78,10 +75,8 @@ The number of NAs in the original data set is 2304
 
 
 ```r
-plot(c(1:nlvl), vSums2, type = "h", lwd = 3, col = "red", xaxt = "n", xlab = "Day", 
-    ylab = "Total Steps That Day")
+plot(toDate, vSums2, type = "h", lwd = 3, col = "red", xlab = "Day", ylab = "Total Steps That Day")
 title(main = "Histogram of Total Number of Steps Each Day with \nNAs replaced by the mean at each day")
-axis(1, vTicks, levels(dat2$date)[vTicks])
 ```
 
 ![plot of chunk totalstepsafterreplace](figure/totalstepsafterreplace.png) 
