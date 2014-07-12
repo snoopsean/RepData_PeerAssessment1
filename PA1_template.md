@@ -2,37 +2,51 @@
 
 
 ## Code to rad in teh data set
-```{r load,echo=TRUE}
+
+```r
 unzip("activity.zip")
 dat<-read.csv("activity.csv")
 ```
 ## Histogram of the total number of steps taken each day
 
-```{r plot1,echo=TRUE,fig.height=4,tidy=TRUE}
-vSums<-as.vector(tapply(dat$steps,dat$date,sum))
-nlvl<-length(levels(dat$date))
-par(mfrow=c(1,1))
-plot(c(1:nlvl),vSums,type="h",lwd=3,col="red",xaxt='n',xlab="Day",ylab="Total Steps That Day")
-title(main="Histogram of Total Number of Steps Each Day")
-vTicks<-c(1,15,31,46,61)
-axis(1,vTicks,levels(dat$date)[vTicks])
-mean1<-as.integer(mean(vSums,na.rm=TRUE))
-median1<-as.integer(median(vSums,na.rm=TRUE))
+
+```r
+vSums <- as.vector(tapply(dat$steps, dat$date, sum))
+nlvl <- length(levels(dat$date))
+par(mfrow = c(1, 1))
+plot(c(1:nlvl), vSums, type = "h", lwd = 3, col = "red", xaxt = "n", xlab = "Day", 
+    ylab = "Total Steps That Day")
+title(main = "Histogram of Total Number of Steps Each Day")
+vTicks <- c(1, 15, 31, 46, 61)
+axis(1, vTicks, levels(dat$date)[vTicks])
 ```
 
-* The mean total number of steps per day is `r mean1`
-* The median total number of steps per day is `r median1`
+![plot of chunk plot1](figure/plot1.png) 
+
+```r
+mean1 <- as.integer(mean(vSums, na.rm = TRUE))
+median1 <- as.integer(median(vSums, na.rm = TRUE))
+```
+
+* The mean total number of steps per day is 10766
+* The median total number of steps per day is 10765
 
 ## Time series plot of the average number of steps taken (averaged across all days) versus the 5-minute intervals
 
-```{r activitycalc,fig.height=4,echo=TRUE}
+
+```r
 facinterval<-as.factor(dat$interval)
 vMeans<-as.vector(tapply(dat$steps,facinterval,mean,na.rm=TRUE))
 vInterval<-as.numeric(levels(facinterval))
 plot(vInterval,vMeans,type="l",main="Time series plot",xlab="interval",ylab="average number of steps at that interval")
+```
+
+![plot of chunk activitycalc](figure/activitycalc.png) 
+
+```r
 maxmean<-vInterval[which.max(vMeans)]
 ```
-The 5-minute interval that, on average, contains the maximum number of steps is `r maxmean`
+The 5-minute interval that, on average, contains the maximum number of steps is 835
 
 
 ## Strategy for imputing missing data
@@ -40,7 +54,8 @@ The 5-minute interval that, on average, contains the maximum number of steps is 
 The strategy is to use mean across all days at that particular time interval to replace the NAs. we know that NAs will be throughout the entire day if they are in the data set
 so we can go through each element of the data set, and if we see an NA, we replace it and all the values for that day with our vMeans vector
 
-```{r missing,echo=TRUE}
+
+```r
 incompletes<-sum(!complete.cases(dat))
 dat2<-dat
 for(i in 1:length(dat2$steps))
@@ -56,30 +71,36 @@ for(i in 1:length(dat2$steps))
 vSums2<-as.vector(tapply(dat2$steps,dat2$date,sum))
 ```
 
-The number of NAs in the original data set is `r incompletes`
+The number of NAs in the original data set is 2304
 
 
 ## Histogram of the total number of steps taken each day after missing values were imputed
 
-```{r plot3,echo=TRUE,fig.height=4,tidy=TRUE}
-plot(c(1:nlvl),vSums2,type="h",lwd=3,col="red",xaxt='n',xlab="Day",ylab="Total Steps That Day")
-title(main="Histogram of Total Number of Steps Each Day with NAs on media")
-axis(1,vTicks,levels(dat2$date)[vTicks])
+
+```r
+plot(c(1:nlvl), vSums2, type = "h", lwd = 3, col = "red", xaxt = "n", xlab = "Day", 
+    ylab = "Total Steps That Day")
+title(main = "Histogram of Total Number of Steps Each Day with NAs on media")
+axis(1, vTicks, levels(dat2$date)[vTicks])
 ```
 
-```{r fillNAcalc,echo=TRUE}
+![plot of chunk plot3](figure/plot3.png) 
+
+
+```r
 mean2<-as.integer(mean(vSums2))
 median2<-as.integer(median(vSums2))
 ```
 
-The mean total number of steps per day is `r mean2`
-The median total number of steps per day is `r median2`
+The mean total number of steps per day is 10766
+The median total number of steps per day is 10766
 
 By replacing the NAs, it raises the median by 1 level, so not too much. the median wasnt that far from the mean anyways. The mean stays the same. 
 
 ## Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
 
-```{r calcweekday,fig.height=10,echo=TRUE}
+
+```r
 dat2$daytype<-weekdays(strptime(as.character(dat2$date),"%Y-%m-%d"))
 for(i in 1:length(dat2$daytype))
 {
@@ -101,3 +122,5 @@ with(dfMeans, {
   plot(interval[daytype=="weekday"],steps[daytype=="weekday"],type="l",main="Weekday",xlab="Time interval",ylab="Mean steps at each time interval")
 })
 ```
+
+![plot of chunk calcweekday](figure/calcweekday.png) 
