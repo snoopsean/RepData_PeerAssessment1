@@ -1,14 +1,14 @@
 # Reproducible Research: Peer Assessment 1
 
 
-## Code to rad in teh data set
+## Code to read in the data set
 ```{r load,echo=TRUE}
 unzip("activity.zip")
 dat<-read.csv("activity.csv")
 ```
 ## Histogram of the total number of steps taken each day
 
-```{r plot1,echo=TRUE,fig.height=4,tidy=TRUE}
+```{r totalsteps,echo=TRUE,fig.height=4,tidy=TRUE}
 vSums<-as.vector(tapply(dat$steps,dat$date,sum))
 nlvl<-length(levels(dat$date))
 par(mfrow=c(1,1))
@@ -61,7 +61,7 @@ The number of NAs in the original data set is `r incompletes`
 
 ## Histogram of the total number of steps taken each day after missing values were imputed
 
-```{r plot3,echo=TRUE,fig.height=4,tidy=TRUE}
+```{r totalstepsafterreplace,echo=TRUE,fig.height=4,tidy=TRUE}
 plot(c(1:nlvl),vSums2,type="h",lwd=3,col="red",xaxt='n',xlab="Day",ylab="Total Steps That Day")
 title(main="Histogram of Total Number of Steps Each Day with NAs on media")
 axis(1,vTicks,levels(dat2$date)[vTicks])
@@ -79,7 +79,7 @@ By replacing the NAs, it raises the median by 1 level, so not too much. the medi
 
 ## Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
 
-```{r calcweekday,fig.height=10,echo=TRUE}
+```{r weekdayvsweekend,fig.height=10,echo=TRUE}
 dat2$daytype<-weekdays(strptime(as.character(dat2$date),"%Y-%m-%d"))
 for(i in 1:length(dat2$daytype))
 {

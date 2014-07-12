@@ -1,7 +1,7 @@
 # Reproducible Research: Peer Assessment 1
 
 
-## Code to rad in teh data set
+## Code to read in the data set
 
 ```r
 unzip("activity.zip")
@@ -21,7 +21,7 @@ vTicks <- c(1, 15, 31, 46, 61)
 axis(1, vTicks, levels(dat$date)[vTicks])
 ```
 
-![plot of chunk plot1](figure/plot1.png) 
+![plot of chunk totalsteps](figure/totalsteps.png) 
 
 ```r
 mean1 <- as.integer(mean(vSums, na.rm = TRUE))
@@ -84,7 +84,7 @@ title(main = "Histogram of Total Number of Steps Each Day with NAs on media")
 axis(1, vTicks, levels(dat2$date)[vTicks])
 ```
 
-![plot of chunk plot3](figure/plot3.png) 
+![plot of chunk totalstepsafterreplace](figure/totalstepsafterreplace.png) 
 
 
 ```r
@@ -123,4 +123,4 @@ with(dfMeans, {
 })
 ```
 
-![plot of chunk calcweekday](figure/calcweekday.png) 
+![plot of chunk weekdayvsweekend](figure/weekdayvsweekend.png) 
